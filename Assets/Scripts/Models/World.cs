@@ -74,7 +74,8 @@ public class World {
     public Tile GetTileAt(int x, int y)
     {
         // check the range
-        if (x > Width || x < 0 || y < 0 || y > Height)
+        // IMPORTANT: remember this is an array so be careful about the boundaries!
+        if (x >= Width || x < 0 || y < 0 || y >= Height)
         {
             Debug.Log("It is out of range");
             return null;

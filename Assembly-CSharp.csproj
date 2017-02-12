@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{3F26DB75-E6AD-FE9C-9D79-A7A215E1F36D}</ProjectGuid>
+    <ProjectGuid>{9DF280AF-104F-8FB5-C419-576FA993147B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -56,6 +56,9 @@
      <Compile Include="Assets\Scripts\Controllers\GameController.cs" />
      <Compile Include="Assets\Scripts\Controllers\MouseController.cs" />
      <Compile Include="Assets\Scripts\Controllers\WorldController.cs" />
+     <Compile Include="Assets\Scripts\Faculty\Faculty.cs" />
+     <Compile Include="Assets\Scripts\Faculty\FacultyFactory.cs" />
+     <Compile Include="Assets\Scripts\Faculty\Prisoner.cs" />
      <Compile Include="Assets\Scripts\Models\Tile.cs" />
      <Compile Include="Assets\Scripts\Models\World.cs" />
      <Compile Include="Assets\Scripts\UIScripts\BuildingSubMenu.cs" />

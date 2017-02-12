@@ -29,6 +29,10 @@ public class GameController : MonoBehaviour {
     public Text buildingInforText_buildingType;
     public Text buildingInforText_price;
 
+    // Update the information bar
+    public Transform _informationBar;
+    RectTransform _informationBar_Panel; 
+
     // Use this for initialization
     void Start () {
 
@@ -40,14 +44,34 @@ public class GameController : MonoBehaviour {
         _hospitals = new List<Hospital>();
 
         _mouseController = FindObjectOfType<MouseController>().GetComponent<MouseController>();
-	}
+        _informationBar_Panel = _informationBar.GetChild(0).gameObject.GetComponent<RectTransform>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
 
         ShowSelectedBuildingInfor();
 
+        UpdateInformationBar();
 	}
+
+    // TODO: update the data: money, faculty Number, etc.
+
+
+    void UpdateInformationBar()
+    {
+
+        _informationBar_Panel.transform.GetChild(0).GetComponent<Text>().text = "Money: " + _playerMoney.ToString();
+
+        _informationBar_Panel.transform.GetChild(1).GetComponent<Text>().text = "Faculty Number: " + _playerFacultyNumber.ToString();
+
+        _informationBar_Panel.transform.GetChild(2).GetComponent<Text>().text = "Student Killed: " + _playerStudentKilled.ToString();
+
+        _informationBar_Panel.transform.GetChild(3).GetComponent<Text>().text = "Market Inflation: " + _playerMarketInflation.ToString();
+
+        _informationBar_Panel.transform.GetChild(4).GetComponent<Text>().text = "Notority Level: " + _playerNotorityLevel.ToString();
+
+    }
 
     // a method that updates the information of the building when the mouse is pressed over the building.
     void ShowSelectedBuildingInfor()

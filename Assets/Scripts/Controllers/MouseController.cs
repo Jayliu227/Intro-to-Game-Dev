@@ -8,7 +8,9 @@ public class MouseController : MonoBehaviour {
 	World world;
 
 	string buildingType;
+    string facultyType;
 	BuildingFactory _buildingFactory;
+
 	Building targetBuilding;
 
     public Dictionary< Tile, Building> tileToBuildingDic;
@@ -59,6 +61,7 @@ public class MouseController : MonoBehaviour {
 		targetBuilding.InstantiateBuilding (lastFramePos);
 
     }
+
 
     // TODO: this one is later used to destory a building
     // based on the tile it stands on and remember to remove it from the dictionary.
@@ -139,7 +142,14 @@ public class MouseController : MonoBehaviour {
     {
         int x = Mathf.FloorToInt(coord.x);
         int y = Mathf.FloorToInt(coord.y);
+        Tile tile = null;
 
-        return WorldController.Instance.World.GetTileAt(x, y);
+        if (WorldController.Instance.World.GetTileAt(x, y) != null)
+            tile = WorldController.Instance.World.GetTileAt(x, y);
+
+        if (tile != null)
+            return tile;
+        else
+            return null;  
     }
 }
