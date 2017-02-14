@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BuildingSubMenu : MonoBehaviour {
+public class SubMenu : MonoBehaviour {
 
     public int buttonSpacing = 35;
 

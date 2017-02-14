@@ -43,6 +43,17 @@ public class Faculty : MonoBehaviour {
         gameObject.name = facultyType.ToString();
     }
 
+    protected void DieAfterLifeTime()
+    {
+        lifeTime -= Time.deltaTime;
+
+        if (lifeTime <= 0)
+        {
+            Debug.Log("One Faculty Died !!");
+            DestroyImmediate(gameObject);
+        }
+    }
+
     protected void UpdateMovement()
     {
 

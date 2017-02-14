@@ -75,6 +75,10 @@ public class World {
     {
         // check the range
         // IMPORTANT: remember this is an array so be careful about the boundaries!
+
+        x = Mathf.FloorToInt(x);
+        y = Mathf.FloorToInt(y);
+
         if (x >= Width || x < 0 || y < 0 || y >= Height)
         {
             Debug.Log("It is out of range");

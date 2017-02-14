@@ -23,6 +23,9 @@ public class FacultyFactory : MonoBehaviour {
                 _prisoner.transform.SetParent(GameObject.Find("Faculty Manager").transform);
 
                 facultyLists.Add(prisoner.GetComponent<Prisoner>());
+
+                UpdateBarManager.current.UpdateInformationOnBar("A new prisoner is coming out!");
+
                 break;  
             default:
                 Debug.Log("faculty type is not recognized");
