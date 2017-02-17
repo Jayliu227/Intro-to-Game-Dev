@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 
+[RequireComponent(typeof(Collider2D))]
 public class Faculty : MonoBehaviour {
     public string facultyType { get; protected set; }
 
@@ -10,7 +11,7 @@ public class Faculty : MonoBehaviour {
     public Vector3 pos { get; protected set; }
     public Vector3 spawningPoint { get; protected set; }
     public Vector3 speed { get; protected set; }
-    public float lifeTime { get; protected set; }
+    public float lifeTime { get; set; }
     public int price { get; protected set; }
 
     protected Vector3 targetDir;
@@ -50,6 +51,7 @@ public class Faculty : MonoBehaviour {
         if (lifeTime <= 0)
         {
             Debug.Log("One Faculty Died !!");
+            FacultyFactory.facultyLists.Remove(this);
             DestroyImmediate(gameObject);
         }
     }
@@ -119,6 +121,7 @@ public class Faculty : MonoBehaviour {
     {
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(selfTransform.position, probeRange);
+
         Gizmos.color = Color.red;
         Gizmos.DrawLine(selfTransform.position, targetDir + selfTransform.position);
     }

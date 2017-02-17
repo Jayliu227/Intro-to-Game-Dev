@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
+    public static GameController instance;
+
     // TODO:
     // 1. get a reference to the information bar and later prob to the billboard that updates the changes.
     // 2. keep track of all the data from the buildings and faculties.
@@ -14,7 +16,14 @@ public class GameController : MonoBehaviour {
     // remember to connect this to the event manager and other things as well.
 
     // the resources a player has
-    public int _playerMoney { get; protected set; }
+    private float _playerMoney;
+    
+    public float _PlayerMoney
+    {
+        get { return _playerMoney; }
+        set { _playerMoney = value; }
+    }
+
     public int _playerFacultyNumber { get; protected set; }
     public int _playerStudentKilled { get; protected set; }
     public int _playerMarketInflation { get; protected set; }    // might be between -1 , 1
@@ -35,6 +44,7 @@ public class GameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        instance = this;
 
         // set the camera to the appropriate position
         Camera.main.transform.position = new Vector3(10f, 10f, -10f);
@@ -47,6 +57,18 @@ public class GameController : MonoBehaviour {
         _informationBar_Panel = _informationBar.GetChild(0).gameObject.GetComponent<RectTransform>();
     }
 	
+    public bool SpendMoney(int amount)
+    {
+        if(amount> _playerMoney)
+        {
+            UpdateBarManager.current.UpdateInformationOnBar("Not enough money, sad.");
+            return false;
+        }
+
+        _playerMoney -= amount;
+        return true;
+    }
+
 	// Update is called once per frame
 	void Update () {
 
@@ -57,11 +79,10 @@ public class GameController : MonoBehaviour {
 
     // TODO: update the data: money, faculty Number, etc.
 
-
     void UpdateInformationBar()
     {
 
-        _informationBar_Panel.transform.GetChild(0).GetComponent<Text>().text = "Money: " + _playerMoney.ToString();
+        _informationBar_Panel.transform.GetChild(0).GetComponent<Text>().text = "Money: " + ((int)_playerMoney).ToString();
 
         _informationBar_Panel.transform.GetChild(1).GetComponent<Text>().text = "Faculty Number: " + _playerFacultyNumber.ToString();
 

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MouseController : MonoBehaviour {
+    public static MouseController instance;
 
 	World world;
 
@@ -28,6 +29,8 @@ public class MouseController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        instance = this;
+
 		_buildingFactory = new BuildingFactory ();
 
         tileToBuildingDic = new Dictionary<Tile, Building>();

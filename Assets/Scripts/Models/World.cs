@@ -49,7 +49,7 @@ public class World {
     public void ArrangeWorldWithSpecialConfig()
     {
 
-        int tileIndexForPlayGround = Height / 3;
+        int tileIndexForPlayGround = Height / 3 - 1;
 
         for (int x = 0; x < Width; x++)
         {
@@ -59,9 +59,9 @@ public class World {
             }
         }
 
-        for (int i = tileIndexForPlayGround; i < tileIndexForPlayGround * 2; i++)
+        for (int i = tileIndexForPlayGround; i < tileIndexForPlayGround * 2 + 3; i++)
         {
-            for (int j =  tileIndexForPlayGround; j < tileIndexForPlayGround * 2; j++)
+            for (int j =  tileIndexForPlayGround; j < Height - tileIndexForPlayGround; j++)
             {
                 tiles[i, j].Type = TileType.PlayGround;
 

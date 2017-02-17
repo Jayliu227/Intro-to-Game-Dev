@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Prisoner : Faculty {
+public class ProfKiller : Faculty {
 
-	// Use this for initialization
-	void Awake(){
+    // Use this for initialization
+    void Awake()
+    {
         Tile tile = WorldController.Instance.World.GetTileAt(Random.Range(1, 20), Random.Range(1, 20));
-        while(tile.Type != TileType.Empty)
+        while (tile.Type != TileType.Empty)
             tile = WorldController.Instance.World.GetTileAt(Random.Range(1, 20), Random.Range(1, 20));
-        
-        SetUpFaculty("Prisoner", new Vector3(tile.X, tile.Y, 0f), Vector3.up, 100f, 100);
+
+        SetUpFaculty("ProfKiller", new Vector3(tile.X, tile.Y, 0f), Vector3.up, 200f, 150);
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         UpdateMovement();
         DieAfterLifeTime();
     }
