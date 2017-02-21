@@ -17,7 +17,6 @@ public class Faculty : MonoBehaviour {
     protected Vector3 targetDir;
     protected Transform selfTransform;
 
-
     // variables for patrolling
     float probeRange = 2f;
     float timePerChange = 3f;

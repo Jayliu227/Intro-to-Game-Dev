@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class StudentFactory : MonoBehaviour {
     public GameObject student;
-    public int maxStudentAmount = 10;
+    public static int maxStudentAmount = 5;
 
     public static List<Student> _studentList;
 
@@ -18,7 +18,6 @@ public class StudentFactory : MonoBehaviour {
 
     public void SpawnStudent()
     {
-        Debug.Log("new student comes out");
         // if student max is suppassed, no students would come unless the max is upgraded.
         if (_studentList.Capacity > maxStudentAmount)
             return;

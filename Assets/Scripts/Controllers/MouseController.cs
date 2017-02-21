@@ -61,8 +61,10 @@ public class MouseController : MonoBehaviour {
 
 		targetBuilding = _buildingFactory.GetBuilding (buildingType);
 
-		targetBuilding.InstantiateBuilding (lastFramePos);
-
+        if (targetBuilding != null)
+        {
+            targetBuilding.InstantiateBuilding(lastFramePos);
+        }            
     }
 
 
@@ -108,10 +110,12 @@ public class MouseController : MonoBehaviour {
             //tileUnderCursor_sr.color *= new Color(0, 0, 0);
 
             if (targetBuilding != null)
-            {
-
+            {               
                 targetBuilding.PlaceBuilding(tileUnderCursor);
+                StartCoroutine(targetBuilding.WaitForBuildingToFinish());
 
+                UpdateBarManager.current.UpdateInformationOnBar("A " + buildingType.ToLower() + " starts to construct.");
+                                            
                 // when the building is placed, add it to the dictionary
                 if (!tileToBuildingDic.ContainsKey(tileUnderCursor))
                     tileToBuildingDic.Add(tileUnderCursor, targetBuilding);
@@ -125,6 +129,18 @@ public class MouseController : MonoBehaviour {
                 buildingType = null;
 
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(targetBuilding != null)
+            {
+                UpdateBarManager.current.UpdateInformationOnBar(targetBuilding.buildingType + " is cancelled");
+                targetBuilding = null;
+                buildingType = null;
+                return;
+            }
+
         }
 
     }

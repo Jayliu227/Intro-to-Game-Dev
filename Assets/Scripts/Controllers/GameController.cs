@@ -7,6 +7,11 @@ public class GameController : MonoBehaviour {
 
     public static GameController instance;
 
+    // for code shortcut
+    public InputField ifield;
+
+    public RectTransform NumberTracker;
+    Text[] trackerTexts;
     // TODO:
     // 1. get a reference to the information bar and later prob to the billboard that updates the changes.
     // 2. keep track of all the data from the buildings and faculties.
@@ -15,6 +20,15 @@ public class GameController : MonoBehaviour {
     // 
     // remember to connect this to the event manager and other things as well.
 
+    // DATA for checking condition: they are all static variables so that every other scripts would be able to refer to them when needed.
+    //------------------------------------
+
+    public static int studentNum { get; protected set; }
+
+    public Dictionary<string, int> facultyNum { get; protected set; }
+    public Dictionary<string, int> buildingNum { get; protected set; }
+
+    //------------------------------------
     // the resources a player has
     private float _playerMoney;
     
@@ -29,10 +43,6 @@ public class GameController : MonoBehaviour {
     public int _playerMarketInflation { get; protected set; }    // might be between -1 , 1
     public int _playerNotorityLevel { get; protected set; }      // might be shown as x%
 
-    // create lists to contain the type of buildings existing in the scene.
-    List<Residence> _residences;
-    List<Hospital> _hospitals;
-
     // for updating the information when selecting the building on the tile
     MouseController _mouseController = null;
     public Text buildingInforText_buildingType;
@@ -46,12 +56,36 @@ public class GameController : MonoBehaviour {
     void Start () {
         instance = this;
 
+        // for testing
+        _playerMoney = 1000;
+
         // set the camera to the appropriate position
         Camera.main.transform.position = new Vector3(10f, 10f, -10f);
         Camera.main.orthographicSize = 10f;
 
-        _residences = new List<Residence>();
-        _hospitals = new List<Hospital>();
+        // instantiate part:
+        facultyNum = new Dictionary<string, int>();
+        buildingNum = new Dictionary<string, int>();
+
+        // -------------------------------------------------
+        buildingNum.Add("residence",0);
+        buildingNum.Add("facultyRoom",0);
+        buildingNum.Add("hospital", 0);
+        buildingNum.Add("lab", 0);
+        buildingNum.Add("diningHall", 0);
+        buildingNum.Add("retailer", 0);
+
+        facultyNum.Add("prisoner", 0);
+        facultyNum.Add("madScientist", 0);
+        facultyNum.Add("profKiller", 0);
+        facultyNum.Add("thief", 0);
+        // -------------------------------------------------
+
+        trackerTexts = new Text[NumberTracker.transform.childCount];
+        for (int i = 0; i < NumberTracker.transform.childCount; i++)
+        {
+            trackerTexts[i] = NumberTracker.transform.GetChild(i).GetComponent<Text>();
+        }
 
         _mouseController = FindObjectOfType<MouseController>().GetComponent<MouseController>();
         _informationBar_Panel = _informationBar.GetChild(0).gameObject.GetComponent<RectTransform>();
@@ -72,12 +106,59 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        ShowSelectedBuildingInfor();
-
+        UpdateData();
+        UpdateChecker();
         UpdateInformationBar();
+
+        ShowSelectedBuildingInfor();
+        
+        // control the secret code window
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ifield.gameObject.SetActive((ifield.IsActive()) ? false : true);
+        }
 	}
 
+    void UpdateChecker()
+    {
+        trackerTexts[0].text = "Student: " + studentNum + " [" + StudentFactory.maxStudentAmount + "]";
+        trackerTexts[1].text = "Faculty Max Numer: " + FacultyFactory.MaxFacultyNum;
+        trackerTexts[2].text = "Residence: " + buildingNum["residence"] + " [unlimited]";
+        trackerTexts[3].text = "Faculty Room: "+ buildingNum["facultyRoom"] + " [unlimited]";
+        trackerTexts[4].text = "Hospital: " + buildingNum["hospital"] + " [5]";
+        trackerTexts[5].text = "Lab: " + buildingNum["lab"] +" [3]";
+        trackerTexts[6].text = "Dining Hall: " + buildingNum["diningHall"] + " [3]";
+        trackerTexts[7].text = "Retailer: " + buildingNum["retailer"] + " [5]";
+    }
+
     // TODO: update the data: money, faculty Number, etc.
+    void UpdateData()
+    {
+        _playerFacultyNumber = FacultyFactory.facultyLists.Count;
+        studentNum = StudentFactory._studentList.Count;
+        // count items in dictionaries:
+        buildingNum["residence"] = GameObject.Find("_Residence").transform.childCount;
+        buildingNum["facultyRoom"] = GameObject.Find("_FacultyRoom").transform.childCount;
+        buildingNum["hospital"] = GameObject.Find("_Hospital").transform.childCount;
+        buildingNum["lab"] = GameObject.Find("_Lab").transform.childCount;
+        buildingNum["diningHall"] = GameObject.Find("_DiningHall").transform.childCount;
+        buildingNum["retailer"] = GameObject.Find("_Retailer").transform.childCount;
+
+        facultyNum["prisoner"] = GameObject.Find("_PRISONER").transform.childCount;
+        facultyNum["madScientist"] = GameObject.Find("_MADSCIENTIST").transform.childCount;
+        facultyNum["profKiller"] = GameObject.Find("_PROFKILLER").transform.childCount;
+        facultyNum["thief"] = GameObject.Find("_THIEF").transform.childCount;
+    }
+
+    // for testing.
+    public void Code()
+    {
+        if (ifield.text == "getMoney")
+            _playerMoney += 3000;
+
+        ifield.text = "";
+    }
 
     void UpdateInformationBar()
     {

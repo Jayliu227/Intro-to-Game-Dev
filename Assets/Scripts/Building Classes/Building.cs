@@ -10,21 +10,30 @@ public abstract class Building {
     public float timeForBuilding { get; protected set; }
     public int price { get; protected set; }
     public GameObject go { get; protected set; }
+    public int maxNum { get; protected set; }
 
     public bool isInstalled = false;
 
     public SpriteRenderer buildingSpriteRenderer = null;
+    public Sprite _sprite;
 
-    public void SetUpBuilding(string buildingType, float timeForBuilding, int price)
+    public void SetUpBuilding(string buildingType, float timeForBuilding, int price, int maxNum)
     {
 
         this.buildingType = buildingType;
         this.timeForBuilding = timeForBuilding;
         this.price = price;
+        this.maxNum = maxNum;
         go = new GameObject();
 
     }
 
+    public IEnumerator WaitForBuildingToFinish()
+    {
+        OnBuildingMode();
+        yield return new WaitForSeconds(timeForBuilding);
+        FinishedBuildingMode();
+    }
 
     // All different kinds of building should have the same type of behaviours but different implementation.
 
@@ -35,8 +44,14 @@ public abstract class Building {
     public abstract void PlaceBuilding(Tile targetTile);
 
     // when it is set up, it should go into the building mode where a coroutine should appear later and goes to last phrase when finished
-    public abstract void OnBuildingMode();
+    public virtual void OnBuildingMode()
+    {
+        buildingSpriteRenderer.sprite = Resources.Load<Sprite>("Construction") as Sprite;
+    }
 
     // this should make all the stats work because the building has been finished. So it is literally there as a building.
-    public abstract void FinishedBuildingMode();
+    public virtual void FinishedBuildingMode()
+    {
+        buildingSpriteRenderer.sprite = _sprite;
+    }
 }

@@ -4,24 +4,25 @@ using System;
 
 public class Residence : Building {
 
+    public Residence()
+    {
+        SetUpBuilding("Residence", 15f, 200, 99999);
+    }
+
     public override void InstantiateBuilding(Vector3 mousePosition)
     {
-
-        SetUpBuilding("Residence", 6f, 200);
         //TODO: set the sprite
         this.position = mousePosition;
         go.transform.name = "Residence";
         go.transform.position = new Vector3(position.x, position.y, 0f);
-        go.transform.SetParent(GameObject.Find("House Manager").transform);
+        go.transform.SetParent(GameObject.Find("_Residence").transform);
 
         buildingSpriteRenderer = go.AddComponent<SpriteRenderer>();
-        Sprite _sprite = Resources.Load<Sprite>("Residence") as Sprite;
-
-        buildingSpriteRenderer.sprite = _sprite;
+        _sprite = Resources.Load<Sprite>("Residence") as Sprite;
 
         // first set the spriteRenderer to deactive because we want the player to know the house is moving with the cursor.
         buildingSpriteRenderer.enabled = false;
-        
+
         // TODO: later should deactivate the button on the UI.
     }
 
@@ -57,16 +58,14 @@ public class Residence : Building {
         targetTile.Type = TileType.PlayGround;
         targetTile.building = this;
 
-        isInstalled = true;
-    }
+        GameController.instance._PlayerMoney -= price;
 
-    public override void OnBuildingMode()
-    {
-        
+        isInstalled = true;
     }
 
     public override void FinishedBuildingMode()
     {
-
+        base.FinishedBuildingMode();
+        StudentFactory.maxStudentAmount += 5;
     }
 }

@@ -13,7 +13,12 @@ public class SubMenu : MonoBehaviour {
     
     // Update is called once per frame
     void Update () {
-    
+        foreach(Transform t in transform.parent)
+        {
+            if (t != transform)
+                if (t.gameObject.activeSelf)
+                    gameObject.SetActive(false);
+        }
     }
 
     public void AdjustSize()

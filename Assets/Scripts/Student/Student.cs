@@ -8,7 +8,7 @@ public class Student : MonoBehaviour {
     public string name { get; protected set; }
     // public Vector3 pos { get; protected set; }
 
-    int tuitionAmount = 1;
+    public static float tuitionAmount = 1;
 
     float probeRange = 1f;
     float timePerChange = 3f;

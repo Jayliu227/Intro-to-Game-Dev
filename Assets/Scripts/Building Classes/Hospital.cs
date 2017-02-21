@@ -4,23 +4,21 @@ using System;
 
 public class Hospital : Building {
 
+    public Hospital()
+    {
+        SetUpBuilding("Hospital", 300f, 800, 5);
+    }
+
     public override void InstantiateBuilding(Vector3 mousePosition)
     {
-
-        SetUpBuilding("Hospital", 5f, 100);
         //TODO: set the sprite
         this.position = mousePosition;
         go.transform.name = "Hospital";
-        go.transform.position = new Vector3(position.x, position.y , 0f);
-        go.transform.SetParent(GameObject.Find("House Manager").transform);
+        go.transform.position = new Vector3(position.x, position.y, 0f);
+        go.transform.SetParent(GameObject.Find("_Hospital").transform);
 
         buildingSpriteRenderer = go.AddComponent<SpriteRenderer>();
-
-
-        // this is fucking annoying man! spent a whole afternoon figuring out why Resources.Load() doesn't work!!
-        Sprite _sprite = Resources.Load<Sprite>("Hospital") as Sprite;
-
-        buildingSpriteRenderer.sprite = _sprite;
+        _sprite = Resources.Load<Sprite>("Hospital") as Sprite;
 
         // first set the spriteRenderer to deactive because we want the player to know the house is moving with the cursor.
         buildingSpriteRenderer.enabled = false;
@@ -38,7 +36,7 @@ public class Hospital : Building {
 
         if (targetTile.Type == TileType.PlayGround)
         {
-            Debug.Log("this is a tile already occupied by a stone");
+            Debug.Log("this is a tile already occupied by a building");
             GameObject.DestroyImmediate(go);
             return;
 
@@ -55,17 +53,15 @@ public class Hospital : Building {
         // enable the sprite renderer
         buildingSpriteRenderer.enabled = true;
 
-        isInstalled = true;
-    }
+        GameController.instance._PlayerMoney -= price;
 
-    public override void OnBuildingMode()
-    {
-        
+        isInstalled = true;
     }
 
     public override void FinishedBuildingMode()
     {
-        
+        base.FinishedBuildingMode();
+        // add 20 sec to every faculty member later.
+        FacultyFactory.durabilityBonus += 20;
     }
-    
 }
