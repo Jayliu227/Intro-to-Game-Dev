@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BuildingFactory {
 
-    Building building = null;
+    Building building;
 
     public Building GetBuilding(string buildingType)
     {
@@ -25,8 +26,10 @@ public class BuildingFactory {
                     GameObject.Destroy(building.go);
                     return null;
                 }
-                                
+                
+         
                 return building;
+
             case "Residence":
                 building = new Residence();
                 if (GameController.instance._PlayerMoney < building.price)
@@ -42,6 +45,7 @@ public class BuildingFactory {
                     GameObject.Destroy(building.go);
                     return null;
                 }
+
 
                 return building;
             case "Lab":

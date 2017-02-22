@@ -166,7 +166,7 @@ public class FacultyFactory : MonoBehaviour {
                 break;
         }
 
-        if(facultyCount > 2)
+        if(facultyCount >= 1)
         {
             if(OnSpawnStudent != null)
             {              

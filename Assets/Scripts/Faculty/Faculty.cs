@@ -49,10 +49,16 @@ public class Faculty : MonoBehaviour {
 
         if (lifeTime <= 0)
         {
-            Debug.Log("One Faculty Died !!");
-            FacultyFactory.facultyLists.Remove(this);
-            DestroyImmediate(gameObject);
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        Debug.Log("One Faculty Died !!");
+        FacultyFactory.facultyLists.Remove(this);
+        if(gameObject != null)
+            Destroy(gameObject);
     }
 
     protected void UpdateMovement()

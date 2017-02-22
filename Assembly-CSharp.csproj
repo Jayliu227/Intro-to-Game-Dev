@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\Building Classes\Labotary.cs" />
      <Compile Include="Assets\Scripts\Building Classes\Residence.cs" />
      <Compile Include="Assets\Scripts\Building Classes\Retailer.cs" />
+     <Compile Include="Assets\Scripts\CameraShake.cs" />
      <Compile Include="Assets\Scripts\Controllers\GameController.cs" />
      <Compile Include="Assets\Scripts\Controllers\MouseController.cs" />
      <Compile Include="Assets\Scripts\Controllers\WorldController.cs" />

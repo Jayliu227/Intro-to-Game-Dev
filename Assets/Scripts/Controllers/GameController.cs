@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour {
     RectTransform _informationBar_Panel; 
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         instance = this;
 
         // for testing
@@ -90,7 +90,13 @@ public class GameController : MonoBehaviour {
         _mouseController = FindObjectOfType<MouseController>().GetComponent<MouseController>();
         _informationBar_Panel = _informationBar.GetChild(0).gameObject.GetComponent<RectTransform>();
     }
-	
+
+    public void StudentKilled(int num)
+    {
+        _playerStudentKilled += num;
+        UpdateBarManager.current.UpdateInformationOnBar("There were " + _playerStudentKilled + " dead already!");
+    }
+
     public bool SpendMoney(int amount)
     {
         if(amount> _playerMoney)
@@ -155,7 +161,10 @@ public class GameController : MonoBehaviour {
     public void Code()
     {
         if (ifield.text == "getMoney")
-            _playerMoney += 3000;
+        {
+            _playerMoney += 30000;
+            UpdateBarManager.current.UpdateInformationOnBar("Have fun with the game");
+        }            
 
         ifield.text = "";
     }

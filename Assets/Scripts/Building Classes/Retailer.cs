@@ -67,6 +67,5 @@ public class Retailer : Building {
     {
         base.FinishedBuildingMode();
         Student.tuitionAmount *= 1.2f;
-        Debug.Log(Student.tuitionAmount);
     }
 }

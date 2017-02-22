@@ -6,9 +6,18 @@ public class Student : MonoBehaviour {
 
     // later prob sign a name to it.
     public string name { get; protected set; }
-    // public Vector3 pos { get; protected set; }
 
     public static float tuitionAmount = 1;
+
+    private float health = 100;
+    public float Health
+    {
+        get { return health; }
+        set
+        {
+            health -= value; // some other animation here.
+        }
+    }
 
     float probeRange = 1f;
     float timePerChange = 3f;
@@ -30,11 +39,17 @@ public class Student : MonoBehaviour {
 	void Update () {
         UpdateMovement();
         PayForTuition();
+
+        if (health <= 0)
+            Die();
 	}
 
     public void Die()
-    {
-       
+    {  
+        GameController.instance.StudentKilled(1);
+        StudentFactory._studentList.Remove(this);
+
+        Destroy(gameObject);
     }
 
     void PayForTuition()
@@ -76,6 +91,16 @@ public class Student : MonoBehaviour {
         }
 
         timePerChange -= Time.deltaTime;
+    }
+
+    public void MoveTowards(Vector3 destination)
+    {
+        transform.Translate(destination);
+
+        Tile tileUnder = MouseController.instance.GetTileAtWorldCoord(transform.position);
+
+        if (tileUnder.Type != TileType.PlayGround)
+            Die();
     }
 
     void FindDirection()

@@ -28,10 +28,14 @@ public abstract class Building {
 
     }
 
+    // this is an interface : Ienumerator
+    // and it has to have at least one yield return, which would give the control back to unity at this frame and gain back after the time being returned here.
     public IEnumerator WaitForBuildingToFinish()
     {
         OnBuildingMode();
-        yield return new WaitForSeconds(timeForBuilding);
+        // above are executed in normal frame and order
+        yield return new WaitForSeconds(timeForBuilding); // you can also return another IEnumerator, which means you want to wait for that to finish and come back to next line.
+        // but here, the execution would suspend for timeForBuilding (sec)
         FinishedBuildingMode();
     }
 

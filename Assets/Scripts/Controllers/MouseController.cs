@@ -16,7 +16,7 @@ public class MouseController : MonoBehaviour {
 
     public Dictionary< Tile, Building> tileToBuildingDic;
     // used to collect data and calculate
-    public List<Building> buildingsAlreadyInstalled;
+    public static List<Building> buildingsAlreadyInstalled;
 
     // TODO: maybe later we need different lists to contain different building types for convenient calculation
 
@@ -112,6 +112,7 @@ public class MouseController : MonoBehaviour {
             if (targetBuilding != null)
             {               
                 targetBuilding.PlaceBuilding(tileUnderCursor);
+                
                 StartCoroutine(targetBuilding.WaitForBuildingToFinish());
 
                 UpdateBarManager.current.UpdateInformationOnBar("A " + buildingType.ToLower() + " starts to construct.");
