@@ -7,10 +7,12 @@ public class StudentFactory : MonoBehaviour {
     public static int maxStudentAmount = 5;
 
     public static List<Student> _studentList;
+    public static List<Student> _studentGraveStones;
 
     void Start()
     {
         _studentList = new List<Student>();
+        _studentGraveStones = new List<Student>();
         // before revision there seemed to be a problem.
         // a static variable is assgined with a non static method seems to be problematic.
         FacultyFactory.RegisterStudentSpawnEvent(SpawnStudent);
@@ -38,7 +40,7 @@ public class StudentFactory : MonoBehaviour {
         _studentList.Add(_student.GetComponent<Student>());
     }
 
-    public void UpgradeStudentMaxAmount(int amount)
+    public static void UpgradeStudentMaxAmount(int amount)
     {
         maxStudentAmount += amount;
         UpdateBarManager.current.UpdateInformationOnBar("current student max is " + maxStudentAmount);

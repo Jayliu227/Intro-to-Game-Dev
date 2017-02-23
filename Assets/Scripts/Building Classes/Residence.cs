@@ -66,6 +66,6 @@ public class Residence : Building {
     public override void FinishedBuildingMode()
     {
         base.FinishedBuildingMode();
-        StudentFactory.maxStudentAmount += 5;
+        StudentFactory.UpgradeStudentMaxAmount(5);
     }
 }

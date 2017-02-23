@@ -61,7 +61,6 @@ public class Hospital : Building {
     public override void FinishedBuildingMode()
     {
         base.FinishedBuildingMode();
-        // add 20 sec to every faculty member later.
         FacultyFactory.durabilityBonus += 20;
     }
 }

@@ -60,6 +60,6 @@ public class Labotary : Building {
     public override void FinishedBuildingMode()
     {
         base.FinishedBuildingMode();
-        // unlock special events
+        EventManager.instance.bonusPossibility += 10;
     }
 }

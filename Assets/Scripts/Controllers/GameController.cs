@@ -2,6 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -41,7 +42,7 @@ public class GameController : MonoBehaviour {
     public int _playerFacultyNumber { get; protected set; }
     public int _playerStudentKilled { get; protected set; }
     public int _playerMarketInflation { get; protected set; }    // might be between -1 , 1
-    public int _playerNotorityLevel { get; protected set; }      // might be shown as x%
+    public int _playerNotorityLevel { get; set; }      // might be shown as x%
 
     // for updating the information when selecting the building on the tile
     MouseController _mouseController = null;
@@ -124,7 +125,15 @@ public class GameController : MonoBehaviour {
         {
             ifield.gameObject.SetActive((ifield.IsActive()) ? false : true);
         }
+
+        CheckingWinningCondition();
 	}
+
+    void CheckingWinningCondition()
+    {
+        if (_PlayerMoney < 0)
+            SceneManager.LoadScene(1);            
+    }
 
     void UpdateChecker()
     {

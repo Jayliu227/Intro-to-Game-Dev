@@ -29,6 +29,10 @@ public class Student : MonoBehaviour {
     Vector3 targetDir;
     Transform selfTransform = null;
 
+    // graveStone
+    public Sprite[] graveStones;
+    public bool isAlive = true;
+
 	// Use this for initialization
 	void Start () {
         selfTransform = transform;
@@ -37,6 +41,9 @@ public class Student : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!isAlive)
+            return;
+
         UpdateMovement();
         PayForTuition();
 
@@ -48,8 +55,26 @@ public class Student : MonoBehaviour {
     {  
         GameController.instance.StudentKilled(1);
         StudentFactory._studentList.Remove(this);
+        if(!StudentFactory._studentGraveStones.Contains(this))
+            StudentFactory._studentGraveStones.Add(this);
 
-        Destroy(gameObject);
+        GameController.instance._playerNotorityLevel += 5;
+
+        isAlive = false;
+        // we turn them into graveStone
+        int randomNum = Mathf.RoundToInt(Random.Range(0, graveStones.Length - 1));
+        gameObject.GetComponent<SpriteRenderer>().sprite = graveStones[randomNum];
+    }
+
+    public void RemoveGraveStone()
+    {
+        if (!isAlive)
+        {
+            Destroy(gameObject);
+            if(StudentFactory._studentGraveStones.Contains(this))
+                StudentFactory._studentGraveStones.Remove(this);
+        }
+            
     }
 
     void PayForTuition()

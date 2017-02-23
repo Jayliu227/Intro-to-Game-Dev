@@ -1,17 +1,27 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class EventManager : MonoBehaviour {
 
     public static EventManager instance;
 
+    public float bonusPossibility = 0;
     // for missile attack
     public Transform targetCross;
     public GameObject missile;
 
+    public RectTransform notification;
+
     LayerMask layerMask = (1 << 8 | 1 << 9); // containing students and faculties
 
     List<Faculty> facultyKilled;
+
+    // check is the event is triggerable.
+    bool isEarthQuakable = false;
+    bool isExplodable = false;
+    bool isMurderable = false;
+    bool isMissileAttackable = false;
 
     void Awake() {
 
@@ -24,30 +34,111 @@ public class EventManager : MonoBehaviour {
         facultyKilled = new List<Faculty>();
     }
 
+    void Start()
+    {
+        StartCoroutine(EducationalCheck());
+        StartCoroutine(CheckCondition());
+    }
 
     void Update()
     {
+        TriggerEvents();
+    }
 
-        if (Input.GetKey(KeyCode.E))
+    System.Collections.IEnumerator CheckCondition()
+    {
+        while (true)
+        {
+            checkCondition();
+            yield return new WaitForSeconds(2);
+        }
+    }
+
+    void checkCondition()
+    {
+        float randomNum = Random.Range(0, 100);
+
+        float PEarthQuake = 0.1f + bonusPossibility;
+        float PExplosion = 0.1f + bonusPossibility;
+        float PMurder = 0.1f + bonusPossibility;
+        float PMissileAttack = 0.1f + bonusPossibility;
+
+        // condition...
+        PEarthQuake += (FacultyFactory.facultyLists.Count + StudentFactory._studentList.Count) * 0.5f + MouseController.buildingsAlreadyInstalled.Count * 0.5f;
+        PExplosion += GameController.instance.facultyNum["madScientist"] * 1.0f + GameController.instance.facultyNum["prisoner"] * 0.5f;
+        PMurder += FacultyFactory.facultyLists.Count + GameController.instance.facultyNum["profKiller"] * 0.5f;
+        PMissileAttack += GameController.instance.facultyNum["madScientist"] * 1.0f + GameController.instance.facultyNum["profKiller"] * 0.5f + GameController.instance.facultyNum["prisoner"] * 0.5f;
+
+        Debug.Log(PEarthQuake +"  "+ PExplosion + "  " +  PMurder + "  " + PMissileAttack);
+
+        if(!isEarthQuakable && randomNum <= PEarthQuake)
+        {
+            isEarthQuakable = true;
+        }
+
+        if(!isEarthQuakable && randomNum <= PEarthQuake)
+        {
+            isEarthQuakable = true;
+        }
+
+        if(!isExplodable && randomNum <= PExplosion)
+        {
+            isExplodable = true;
+            notification.GetChild(0).GetComponent<Text>().color = Color.red;
+        }
+
+        if(!isMurderable && randomNum <= PMurder)
+        {
+            isMurderable = true;
+            notification.GetChild(1).GetComponent<Text>().color = Color.red;
+        }
+
+        if(!isMissileAttackable && randomNum <= PMissileAttack)
+        {
+            isMissileAttackable = true;
+            notification.GetChild(2).GetComponent<Text>().color = Color.red;
+        }
+    }
+
+    void TriggerEvents()
+    {
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            CleanGround();
+        }
+
+        if (Input.GetKey(KeyCode.E) && isExplodable)
             if (Input.GetMouseButtonDown(0))
+            {
                 Explosion_Event();
-
-        if (Input.GetKeyDown(KeyCode.M))
+                isExplodable = false;
+                notification.GetChild(0).GetComponent<Text>().color = Color.black;
+            }
+        if (Input.GetKeyDown(KeyCode.K) && isMurderable)
+        {
             Murder_Event();
+            isMurderable = false;
+            notification.GetChild(1).GetComponent<Text>().color = Color.black;
+        }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (isEarthQuakable)
+        {
             PseudoEarthQuake_Event();
-
-        if (Input.GetKey(KeyCode.F))
+            isEarthQuakable = false;
+        }
+        if (Input.GetKey(KeyCode.M) && isMissileAttackable)
             if (Input.GetMouseButtonDown(0))
+            {
                 MissleAttack_Event();
-
-        if (Input.GetKeyDown(KeyCode.Z))
-            Fire_Event();
+                isMissileAttackable = false;
+                notification.GetChild(3).GetComponent<Text>().color = Color.black;
+            }
     }
     // TODO: we first need to figure out how to achieve the effects
     // and then try to figure out the relationship between faculty, building and the possibility of each event.
 
+    // --------------------------------------------------------------------------->
     public void Explosion_Event() {
         // figure out a random point within the map range but exclude playground area.
         int range = 2;
@@ -110,9 +201,10 @@ public class EventManager : MonoBehaviour {
    
     private System.Collections.IEnumerator WaitForMissle (){
 
-        Debug.Log(targetCross.transform.position);
         yield return new WaitForSeconds(3);
         GameObject _missile = Instantiate(missile, targetCross.position, Quaternion.identity) as GameObject;
+        CameraShake.instance.BeginShaking(0.05f, 40);
+
         yield return new WaitForSeconds(1);
         GameObject.Destroy(_missile);
         targetCross.gameObject.SetActive(false);
@@ -151,6 +243,7 @@ public class EventManager : MonoBehaviour {
         CameraShake.instance.BeginShaking(1f, 80);
 
         int studentKilledNum = Mathf.RoundToInt(Random.Range(0, StudentFactory._studentList.Count));
+
         for (int i = 0; i < studentKilledNum; i++)
         {
             if (StudentFactory._studentList.Count < 0)
@@ -161,6 +254,11 @@ public class EventManager : MonoBehaviour {
             targetStudent.GetComponent<Student>().Die();
         }
 
+        Student[] graves = new Student[StudentFactory._studentGraveStones.Count];
+        StudentFactory._studentGraveStones.CopyTo(graves);
+
+        foreach (Student s in graves)
+            s.RemoveGraveStone();
 
         float radius = 1;
 
@@ -193,64 +291,88 @@ public class EventManager : MonoBehaviour {
         // increase the possibility of educational check.
     }
 
-    // --------------------------------------------------------------------------->
-
-    public void RampantPhantom()
-    {
-        // make the scene darker
-        // add in ghosts of students
-        // get rid of the bodies in the middle.
-
-    }
-
-    public void Fire_Event()
-    {
-        // choose one faculty or student to runaway, not die. 
-        // decrease the notorious level.
-    }
-
     public void Suicide_Event() {
-        // student lies without increasing the notorious level.
+        Murder_Event();
     }
 
-    public void GasPoison_Event() {
-        // certain type of faculty and destory, kill students along the whole column or row.
-    }
-
-    public void ChemicalAccident_Event()
+    private System.Collections.IEnumerator EducationalCheck()
     {
-        // get the student list and choose a random index to get rid of
-        // might effec other students, not sure now.
-
-        // print to the information window.
-        // animation and sound effect.
+        while (true)
+        {
+            yield return new WaitForSeconds(120);           
+            UpdateBarManager.current.UpdateInformationOnBar("Educational Event would happen in 10 sec! Work Harder");
+            yield return new WaitForSeconds(10);
+            EducationCheck_Event();
+            if(!EducationCheck_Event())
+                UpdateBarManager.current.UpdateInformationOnBar("You've passed. The next check would happen in 2 min.");
+            else
+                UpdateBarManager.current.UpdateInformationOnBar("Sorry...");
+        }
     }
 
-    public void Brawl_Event() {
-        // students die and drastically increase the notorious level.
-
-    }
-    public void FoodPoison_Event() {
-        // choose one dining hall to kill students within two tiles.
-    }
-    public void EducationCheck_Event() {
+    public bool EducationCheck_Event()
+    {
         // instantiate a national education department car
         // animation starts.
         // check standard to see if it fullfills.
-        // do certain punishment if not.
+        bool isFullFilled = true;
+        GameController gc = GameController.instance;
+        
+        if(gc._PlayerMoney < 1500)
+        {
+            UpdateBarManager.current.UpdateInformationOnBar("The great philanthropist Jay Liu anonymously supported this school with " + 3500 + ".");
+            gc._PlayerMoney += 1500;
+        }
 
-        // should have some sub methods to define what to do.
+        if(StudentFactory._studentList.Count <= 10)
+        {
+            UpdateBarManager.current.UpdateInformationOnBar("Educational Department's Director, Ms Stella, feels ashamed of this school's environment for students.");
+            gc.SpendMoney(-200 * (10 - StudentFactory._studentList.Count));
+            isFullFilled = false;
+        }
+
+        if (FacultyFactory.facultyLists.Count <= 10)
+        {
+            UpdateBarManager.current.UpdateInformationOnBar("Educational Department's Director, Ms Stella, critizes this school for back teaching quality.");
+            gc.SpendMoney(-200 * (10 - FacultyFactory.facultyLists.Count));
+            isFullFilled = false;
+        }
+
+        if(StudentFactory._studentGraveStones.Count <= 3)
+        {
+            UpdateBarManager.current.UpdateInformationOnBar("Educational Department's Director, Ms Stella, is really satisfied by the clean campus!");
+            gc._PlayerMoney += 1000;
+        }
+
+        if (!isFullFilled)
+            EducationCheckPunishment();
+
+        return isFullFilled;
     }
-    public void NervousBreakdown_Event() {
-        // choose one student to kill
-        // and students refuse to pay tuition for a certain amount of time.
+
+    private void EducationCheckPunishment()
+    {
+        GameController.instance._PlayerMoney = -1500;
+        GameController.instance._playerNotorityLevel -= 10;
     }
-    public void MonsterAppear_Event() {
-        // instantiate a monster to kill anybody near it.
+
+    public void CleanGround()
+    {
+        Student[] graves = new Student[StudentFactory._studentGraveStones.Count];
+        StudentFactory._studentGraveStones.CopyTo(graves);
+
+        if (graves.Length == 0 || GameController.instance._PlayerMoney <= 100 * graves.Length)
+            return;
+
+        GameController.instance.SpendMoney(-100 * graves.Length);
+
+        foreach (Student std in graves)
+        {
+            std.RemoveGraveStone();
+            GameController.instance._playerNotorityLevel += 1;
+        }            
     }
-    public void UFO_Event() {
-        // take some people away, some faculty and some students.
-        // invoke fear among students.
-        // so students would move faster.
-    }
+
+    // --------------------------------------------------------------------------->
+
 }
