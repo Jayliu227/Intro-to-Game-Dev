@@ -9,7 +9,7 @@ public class MadScientist : Faculty {
         while (tile.Type != TileType.Empty)
             tile = WorldController.Instance.World.GetTileAt(Random.Range(1, 20), Random.Range(1, 20));
 
-        SetUpFaculty("MadScientist", new Vector3(tile.X, tile.Y, 0f), Vector3.up, 300f, 250);
+        SetUpFaculty("MadScientist", new Vector3(tile.X, tile.Y, 0f), Vector3.up, 1000f, 450);
     }
 
     // Update is called once per frame

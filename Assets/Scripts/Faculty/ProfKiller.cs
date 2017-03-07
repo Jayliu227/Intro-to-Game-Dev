@@ -10,7 +10,7 @@ public class ProfKiller : Faculty {
         while (tile.Type != TileType.Empty)
             tile = WorldController.Instance.World.GetTileAt(Random.Range(1, 20), Random.Range(1, 20));
 
-        SetUpFaculty("ProfKiller", new Vector3(tile.X, tile.Y, 0f), Vector3.up, 200f, 150);
+        SetUpFaculty("ProfKiller", new Vector3(tile.X, tile.Y, 0f), Vector3.up, 350f, 450);
     }
 
     // Update is called once per frame

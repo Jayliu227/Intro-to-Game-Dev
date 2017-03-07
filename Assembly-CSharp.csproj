@@ -64,10 +64,13 @@
      <Compile Include="Assets\Scripts\Faculty\Prisoner.cs" />
      <Compile Include="Assets\Scripts\Faculty\ProfKiller.cs" />
      <Compile Include="Assets\Scripts\Faculty\Thief.cs" />
+     <Compile Include="Assets\Scripts\GhostMovement.cs" />
      <Compile Include="Assets\Scripts\Models\Tile.cs" />
      <Compile Include="Assets\Scripts\Models\World.cs" />
+     <Compile Include="Assets\Scripts\SizeAdjustToCamera.cs" />
      <Compile Include="Assets\Scripts\Student\Student.cs" />
      <Compile Include="Assets\Scripts\Student\StudentFactory.cs" />
+     <Compile Include="Assets\Scripts\ToolTips.cs" />
      <Compile Include="Assets\Scripts\UIScripts\InfoBarFixation.cs" />
      <Compile Include="Assets\Scripts\UIScripts\SubMenu.cs" />
      <Compile Include="Assets\Scripts\UIScripts\UpdateBarManager.cs" />

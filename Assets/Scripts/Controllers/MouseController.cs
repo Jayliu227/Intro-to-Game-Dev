@@ -43,7 +43,6 @@ public class MouseController : MonoBehaviour {
 		lastFramePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		lastFramePos.z = 0;
 
-
 		// use mouse to move the screen
 		ScreenMovement();
 		// change the color of the selected tile
@@ -110,7 +109,12 @@ public class MouseController : MonoBehaviour {
             //tileUnderCursor_sr.color *= new Color(0, 0, 0);
 
             if (targetBuilding != null)
-            {               
+            {   if (tileUnderCursor.Type != TileType.Empty)
+                {
+                    UpdateBarManager.current.UpdateInformationOnBar("That's where students play");
+                    return;
+                }                    
+                        
                 targetBuilding.PlaceBuilding(tileUnderCursor);
                 
                 StartCoroutine(targetBuilding.WaitForBuildingToFinish());
@@ -152,7 +156,7 @@ public class MouseController : MonoBehaviour {
 		{
 			Vector3 diff = currentFramePos - lastFramePos;
 			Camera.main.transform.Translate(diff);
-		}
+        }
 		
 		Camera.main.orthographicSize -= Camera.main.orthographicSize * Input.GetAxis("Mouse ScrollWheel");
 		Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 1.0f, 12.0f);
@@ -170,6 +174,7 @@ public class MouseController : MonoBehaviour {
         if (tile != null)
             return tile;
         else
-            return null;  
+            return null;
+        
     }
 }

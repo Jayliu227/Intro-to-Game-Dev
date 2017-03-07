@@ -5,7 +5,7 @@ public class Retailer : Building {
 
     public Retailer()
     {
-        SetUpBuilding("Retailer", 120f, 450, 5);
+        SetUpBuilding("Retailer", 20f, 500, 5);
     }
 
     public override void InstantiateBuilding(Vector3 mousePosition)

@@ -5,7 +5,7 @@ public class Labotary : Building {
 
     public Labotary()
     {
-        SetUpBuilding("Lab", 300f, 10000, 3);
+        SetUpBuilding("Lab", 60f, 5000, 3);
     }
 
     public override void InstantiateBuilding(Vector3 mousePosition)

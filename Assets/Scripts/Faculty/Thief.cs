@@ -10,7 +10,7 @@ public class Thief : Faculty {
         while (tile.Type != TileType.Empty)
             tile = WorldController.Instance.World.GetTileAt(Random.Range(1, 20), Random.Range(1, 20));
 
-        SetUpFaculty("Thief", new Vector3(tile.X, tile.Y, 0f), Vector3.up, 50f, 80);
+        SetUpFaculty("Thief", new Vector3(tile.X, tile.Y, 0f), Vector3.up, 450f, 380);
     }
 
     // Update is called once per frame

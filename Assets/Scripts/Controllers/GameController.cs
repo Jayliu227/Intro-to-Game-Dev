@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour {
 
     // for code shortcut
     public InputField ifield;
-
+    public GameObject PausePanel;
     public RectTransform NumberTracker;
     Text[] trackerTexts;
     // TODO:
@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour {
         instance = this;
 
         // for testing
-        _playerMoney = 1000;
+        _playerMoney = 2500;
 
         // set the camera to the appropriate position
         Camera.main.transform.position = new Vector3(10f, 10f, -10f);
@@ -110,6 +110,17 @@ public class GameController : MonoBehaviour {
         return true;
     }
 
+    public void PauseAndResumeGame()
+    {
+        Time.timeScale = (Time.timeScale == 0) ? 1 : 0;
+        PausePanel.SetActive((PausePanel.activeSelf) ? false: true);
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);
+    }
+
 	// Update is called once per frame
 	void Update () {
 
@@ -131,8 +142,12 @@ public class GameController : MonoBehaviour {
 
     void CheckingWinningCondition()
     {
+
         if (_PlayerMoney < 0)
-            SceneManager.LoadScene(1);            
+        {
+            Debug.Log("end game");
+            SceneManager.LoadScene(1);
+        }
     }
 
     void UpdateChecker()
@@ -173,7 +188,12 @@ public class GameController : MonoBehaviour {
         {
             _playerMoney += 30000;
             UpdateBarManager.current.UpdateInformationOnBar("Have fun with the game");
-        }            
+        }  
+        
+        if(ifield.text == "+chance")
+        {
+            EventManager.instance.bonusPossibility += 30;
+        }                
 
         ifield.text = "";
     }

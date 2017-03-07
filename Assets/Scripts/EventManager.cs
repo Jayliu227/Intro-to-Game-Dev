@@ -10,7 +10,8 @@ public class EventManager : MonoBehaviour {
     // for missile attack
     public Transform targetCross;
     public GameObject missile;
-
+    public GameObject ghost;
+    public GameObject eduNotification;
     public RectTransform notification;
 
     LayerMask layerMask = (1 << 8 | 1 << 9); // containing students and faculties
@@ -65,6 +66,7 @@ public class EventManager : MonoBehaviour {
 
         // condition...
         PEarthQuake += (FacultyFactory.facultyLists.Count + StudentFactory._studentList.Count) * 0.5f + MouseController.buildingsAlreadyInstalled.Count * 0.5f;
+        PEarthQuake *= 0.2f;
         PExplosion += GameController.instance.facultyNum["madScientist"] * 1.0f + GameController.instance.facultyNum["prisoner"] * 0.5f;
         PMurder += FacultyFactory.facultyLists.Count + GameController.instance.facultyNum["profKiller"] * 0.5f;
         PMissileAttack += GameController.instance.facultyNum["madScientist"] * 1.0f + GameController.instance.facultyNum["profKiller"] * 0.5f + GameController.instance.facultyNum["prisoner"] * 0.5f;
@@ -291,24 +293,31 @@ public class EventManager : MonoBehaviour {
         // increase the possibility of educational check.
     }
 
-    public void Suicide_Event() {
-        Murder_Event();
-    }
-
     private System.Collections.IEnumerator EducationalCheck()
     {
         while (true)
         {
-            yield return new WaitForSeconds(120);           
-            UpdateBarManager.current.UpdateInformationOnBar("Educational Event would happen in 10 sec! Work Harder");
+            yield return new WaitForSeconds(40);
+            eduNotification.SetActive(true);
+            eduNotification.GetComponentInChildren<Text>().text = "The educational check would come soon! \n Requirements:\n Faculty Members: " 
+                                                                    + GameController.instance._playerFacultyNumber +"/10" + "\n Student Numbers: "
+                                                                    + StudentFactory._studentList.Count + "/10" + "\n GraveStones need to be as less as possible!";
+            Time.timeScale = 0;
             yield return new WaitForSeconds(10);
             EducationCheck_Event();
-            if(!EducationCheck_Event())
+            if (EducationCheck_Event())
                 UpdateBarManager.current.UpdateInformationOnBar("You've passed. The next check would happen in 2 min.");
             else
-                UpdateBarManager.current.UpdateInformationOnBar("Sorry...");
+            {
+                EducationCheckPunishment();
+                Time.timeScale = 0;
+                eduNotification.SetActive(true);
+                eduNotification.GetComponentInChildren<Text>().text = "You've failed the check!\n Punishment: " + (-100 * (10 - StudentFactory._studentList.Count) + -100 * (10 - FacultyFactory.facultyLists.Count) -2500);
+            }                
         }
     }
+
+    public void Resume() { Time.timeScale = 1; eduNotification.SetActive(false); }
 
     public bool EducationCheck_Event()
     {
@@ -321,38 +330,36 @@ public class EventManager : MonoBehaviour {
         if(gc._PlayerMoney < 1500)
         {
             UpdateBarManager.current.UpdateInformationOnBar("The great philanthropist Jay Liu anonymously supported this school with " + 3500 + ".");
-            gc._PlayerMoney += 1500;
+            gc._PlayerMoney += 3500;
         }
 
         if(StudentFactory._studentList.Count <= 10)
         {
             UpdateBarManager.current.UpdateInformationOnBar("Educational Department's Director, Ms Stella, feels ashamed of this school's environment for students.");
-            gc.SpendMoney(-200 * (10 - StudentFactory._studentList.Count));
+            gc.SpendMoney(-100 * (10 - StudentFactory._studentList.Count));
             isFullFilled = false;
         }
 
         if (FacultyFactory.facultyLists.Count <= 10)
         {
             UpdateBarManager.current.UpdateInformationOnBar("Educational Department's Director, Ms Stella, critizes this school for back teaching quality.");
-            gc.SpendMoney(-200 * (10 - FacultyFactory.facultyLists.Count));
+            gc.SpendMoney(-100 * (10 - FacultyFactory.facultyLists.Count));
             isFullFilled = false;
         }
 
-        if(StudentFactory._studentGraveStones.Count <= 3)
+        if(StudentFactory._studentGraveStones.Count <= 2)
         {
             UpdateBarManager.current.UpdateInformationOnBar("Educational Department's Director, Ms Stella, is really satisfied by the clean campus!");
             gc._PlayerMoney += 1000;
         }
-
-        if (!isFullFilled)
-            EducationCheckPunishment();
 
         return isFullFilled;
     }
 
     private void EducationCheckPunishment()
     {
-        GameController.instance._PlayerMoney = -1500;
+        Debug.Log("12321312");
+        GameController.instance._PlayerMoney -= 2500;
         GameController.instance._playerNotorityLevel -= 10;
     }
 
@@ -370,6 +377,7 @@ public class EventManager : MonoBehaviour {
         {
             std.RemoveGraveStone();
             GameController.instance._playerNotorityLevel += 1;
+            GameObject go = (GameObject)Instantiate(ghost, std.transform.position, Quaternion.identity, GameObject.Find("Ghost Manager").transform);            
         }            
     }
 
