@@ -9,14 +9,29 @@ public class StudentFactory : MonoBehaviour {
     public static List<Student> _studentList;
     public static List<Student> _studentGraveStones;
 
+	public Sprite[] bodies = new Sprite[7];
+	public Sprite[] heads = new Sprite[18];
+
+	AudioSource Audio;
+
     void Start()
     {
+		Audio = GetComponent<AudioSource> ();
         _studentList = new List<Student>();
         _studentGraveStones = new List<Student>();
         // before revision there seemed to be a problem.
         // a static variable is assgined with a non static method seems to be problematic.
         FacultyFactory.RegisterStudentSpawnEvent(SpawnStudent);
     }
+
+	void Update(){
+		if (_studentList.Count > 0) {
+			if (!GetComponent<AudioSource> ().isPlaying) {
+				Audio.Play ();
+			}
+		}else
+			Audio.Stop ();
+	}
 
     public void SpawnStudent()
     {
@@ -34,9 +49,13 @@ public class StudentFactory : MonoBehaviour {
                                   Random.Range(WorldController.Instance.World.Height / 3 , WorldController.Instance.World.Height - (WorldController.Instance.World.Width / 3 )), 0f);
 
         GameObject _student = Instantiate(student, pos, Quaternion.identity) as GameObject;
+		int head = Mathf.RoundToInt(Random.Range (0, 18));
+		int body = Mathf.RoundToInt(Random.Range (0, 7));
+
+		_student.GetComponent<SpriteRenderer> ().sprite = bodies[body];
+		_student.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = heads[head];
 
         _student.transform.SetParent(GameObject.Find("Student Manager").transform);
-
         _studentList.Add(_student.GetComponent<Student>());
     }
 

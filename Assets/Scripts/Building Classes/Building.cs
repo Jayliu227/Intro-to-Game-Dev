@@ -50,12 +50,29 @@ public abstract class Building {
     // when it is set up, it should go into the building mode where a coroutine should appear later and goes to last phrase when finished
     public virtual void OnBuildingMode()
     {
+		isInstalled = false;
         buildingSpriteRenderer.sprite = Resources.Load<Sprite>("Construction") as Sprite;
+		if(!BuildingFactory.Buildings.Contains(this))
+			BuildingFactory.Buildings.Add (this);
+		if (!GameController.instance.GetComponent<AudioSource> ().isPlaying) {
+			GameController.instance.GetComponent<AudioSource> ().Play ();
+		}
     }
 
     // this should make all the stats work because the building has been finished. So it is literally there as a building.
     public virtual void FinishedBuildingMode()
     {
+		isInstalled = true;
+		AudioSource.PlayClipAtPoint (EventManager.instance.finishBuilding, Camera.main.transform.position, 3f);
         buildingSpriteRenderer.sprite = _sprite;
+		if (BuildingFactory.Buildings.Contains (this)) {
+			BuildingFactory.Buildings.Remove (this);
+		}
+		for (int i = 0; i < BuildingFactory.Buildings.Count; i++) {
+			if (!BuildingFactory.Buildings [i].isInstalled) {
+				return;
+			}
+		}
+		GameController.instance.GetComponent<AudioSource> ().Stop ();
     }
 }

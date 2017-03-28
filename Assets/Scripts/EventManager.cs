@@ -5,6 +5,11 @@ using System.Collections.Generic;
 public class EventManager : MonoBehaviour {
 
     public static EventManager instance;
+	public AudioClip meteroid;
+	public AudioClip trigger;
+	public AudioClip neck;
+	public AudioClip finishBuilding;
+	public AudioClip explosion;
 
     public float bonusPossibility = 0;
     // for missile attack
@@ -78,27 +83,25 @@ public class EventManager : MonoBehaviour {
             isEarthQuakable = true;
         }
 
-        if(!isEarthQuakable && randomNum <= PEarthQuake)
-        {
-            isEarthQuakable = true;
-        }
-
         if(!isExplodable && randomNum <= PExplosion)
         {
             isExplodable = true;
             notification.GetChild(0).GetComponent<Text>().color = Color.red;
+			AudioSource.PlayClipAtPoint (trigger, Camera.main.transform.position, 3f);
         }
 
         if(!isMurderable && randomNum <= PMurder)
         {
             isMurderable = true;
             notification.GetChild(1).GetComponent<Text>().color = Color.red;
+			AudioSource.PlayClipAtPoint (trigger, Camera.main.transform.position, 3f);
         }
 
         if(!isMissileAttackable && randomNum <= PMissileAttack)
         {
             isMissileAttackable = true;
             notification.GetChild(2).GetComponent<Text>().color = Color.red;
+			AudioSource.PlayClipAtPoint (trigger, Camera.main.transform.position, 3f);
         }
     }
 
@@ -152,6 +155,7 @@ public class EventManager : MonoBehaviour {
         }
         // and expand it to a circle and get all the things in the circle and destory bascially.
 
+		AudioSource.PlayClipAtPoint (explosion, Camera.main.transform.position, 0.6f);
         Collider2D[] collInRange = Physics2D.OverlapCircleAll(new Vector2(explosionPoint.x, explosionPoint.y), range, layerMask, -10, 10);
         GameObject[] goInRange = new GameObject[collInRange.Length];
 
@@ -199,6 +203,7 @@ public class EventManager : MonoBehaviour {
         GameObject target = StudentFactory._studentList[index].gameObject;
         StudentFactory._studentList.Remove(target.GetComponent<Student>());
         target.GetComponent<Student>().Die();
+		AudioSource.PlayClipAtPoint (neck, Camera.main.transform.position, 3f);
     }
    
     private System.Collections.IEnumerator WaitForMissle (){
@@ -222,6 +227,7 @@ public class EventManager : MonoBehaviour {
 
             std.GetComponent<Student>().Health = 60;
         }
+		AudioSource.PlayClipAtPoint (meteroid, Camera.main.transform.position, 3f);
 
         yield return new WaitForSeconds(1);
     } 
@@ -242,7 +248,9 @@ public class EventManager : MonoBehaviour {
 
     public void PseudoEarthQuake_Event() {
         // make the camera vibrate and kill randomly
-        CameraShake.instance.BeginShaking(1f, 80);
+        CameraShake.instance.BeginShaking(1f, 300);
+		AudioSource audio = EventManager.instance.gameObject.transform.GetChild(0).gameObject.GetComponent<AudioSource>();
+		audio.Play ();
 
         int studentKilledNum = Mathf.RoundToInt(Random.Range(0, StudentFactory._studentList.Count));
 
@@ -290,7 +298,13 @@ public class EventManager : MonoBehaviour {
         }
 
         facultyKilled.Clear();
-        // increase the possibility of educational check.
+
+		float counter = 150;
+		while (counter >= 0) {
+			counter--;
+		}
+		audio.Stop();
+		// increase the possibility of educational check.
     }
 
     private System.Collections.IEnumerator EducationalCheck()

@@ -6,6 +6,8 @@ public class BuildingFactory {
 
     Building building;
 
+	public static List<Building> Buildings = new List<Building> ();
+
     public Building GetBuilding(string buildingType)
     {
 

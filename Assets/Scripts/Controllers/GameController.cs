@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
     public InputField ifield;
     public GameObject PausePanel;
     public RectTransform NumberTracker;
+    public GameObject wave;
     Text[] trackerTexts;
     // TODO:
     // 1. get a reference to the information bar and later prob to the billboard that updates the changes.
@@ -23,7 +24,6 @@ public class GameController : MonoBehaviour {
 
     // DATA for checking condition: they are all static variables so that every other scripts would be able to refer to them when needed.
     //------------------------------------
-
     public static int studentNum { get; protected set; }
 
     public Dictionary<string, int> facultyNum { get; protected set; }
@@ -90,6 +90,17 @@ public class GameController : MonoBehaviour {
 
         _mouseController = FindObjectOfType<MouseController>().GetComponent<MouseController>();
         _informationBar_Panel = _informationBar.GetChild(0).gameObject.GetComponent<RectTransform>();
+
+    }
+
+    void Start()
+    {
+
+        for (int i = 0; i < 30; i++)
+        {
+            Instantiate(wave, GameObject.Find("waveManager").transform);
+        }
+
     }
 
     public void StudentKilled(int num)
@@ -136,6 +147,11 @@ public class GameController : MonoBehaviour {
         {
             ifield.gameObject.SetActive((ifield.IsActive()) ? false : true);
         }
+
+        // this part is for clamping the camera:
+		float y = Mathf.Clamp(Camera.main.transform.position.y, 8f, 13f);
+        float x = Mathf.Clamp(Camera.main.transform.position.x, 8f, 13f);
+        Camera.main.transform.position = new Vector3(x, y, Camera.main.transform.position.z);
 
         CheckingWinningCondition();
 	}

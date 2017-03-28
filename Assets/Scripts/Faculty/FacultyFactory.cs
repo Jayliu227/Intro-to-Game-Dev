@@ -171,6 +171,7 @@ public class FacultyFactory : MonoBehaviour {
             if(OnSpawnStudent != null)
             {              
                 OnSpawnStudent();
+				OnSpawnStudent();
                 facultyCount = 0;
             }
             

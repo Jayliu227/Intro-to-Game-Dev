@@ -64,6 +64,7 @@ public class Student : MonoBehaviour {
         // we turn them into graveStone
         int randomNum = Mathf.RoundToInt(Random.Range(0, graveStones.Length - 1));
         gameObject.GetComponent<SpriteRenderer>().sprite = graveStones[randomNum];
+		gameObject.transform.GetChild (0).GetComponent<SpriteRenderer> ().sprite = null;
     }
 
     public void RemoveGraveStone()

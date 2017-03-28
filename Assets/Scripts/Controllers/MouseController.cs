@@ -109,11 +109,16 @@ public class MouseController : MonoBehaviour {
             //tileUnderCursor_sr.color *= new Color(0, 0, 0);
 
             if (targetBuilding != null)
-            {   if (tileUnderCursor.Type != TileType.Empty)
-                {
-                    UpdateBarManager.current.UpdateInformationOnBar("That's where students play");
-                    return;
-                }                    
+            {   
+				for (int i = tileUnderCursor.X - 1; i <= tileUnderCursor.X + 1; i++) {
+					for (int j = tileUnderCursor.Y - 1; j <= tileUnderCursor.Y + 1; j++){
+						if (GetTileAtWorldCoord(new Vector3(i, j)).Type != TileType.Empty)
+						{
+							UpdateBarManager.current.UpdateInformationOnBar("That's where students play");
+							return;
+						}                    
+					}
+				}
                         
                 targetBuilding.PlaceBuilding(tileUnderCursor);
                 
