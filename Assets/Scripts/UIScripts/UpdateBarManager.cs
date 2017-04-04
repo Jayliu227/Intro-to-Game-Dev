@@ -12,6 +12,8 @@ public class UpdateBarManager : MonoBehaviour {
 	private int time_m;
 	private int time_s;
 
+    private bool isShowing = true;
+
 	// Use this for initialization
 	void Start () {
 		current = this;
@@ -35,4 +37,5 @@ public class UpdateBarManager : MonoBehaviour {
 
 		lines[0].text = "[" + time_m + "m" + time_s + "s] " + infor;
 	}
+
 }

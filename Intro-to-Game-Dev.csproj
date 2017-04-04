@@ -73,14 +73,9 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Prefabs\Explosion.cs" />
     <Compile Include="Assets\Scripts\Building Classes\Building.cs" />
     <Compile Include="Assets\Scripts\Building Classes\BuildingFactory.cs" />
     <Compile Include="Assets\Scripts\Building Classes\DiningHall.cs" />
@@ -89,30 +84,30 @@
     <Compile Include="Assets\Scripts\Building Classes\Labotary.cs" />
     <Compile Include="Assets\Scripts\Building Classes\Residence.cs" />
     <Compile Include="Assets\Scripts\Building Classes\Retailer.cs" />
-    <Compile Include="Assets\Scripts\CameraShake.cs" />
+    <Compile Include="Assets\Scripts\Controllers\EventManager.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameController.cs" />
     <Compile Include="Assets\Scripts\Controllers\MouseController.cs" />
     <Compile Include="Assets\Scripts\Controllers\WorldController.cs" />
-    <Compile Include="Assets\Scripts\EventManager.cs" />
     <Compile Include="Assets\Scripts\Faculty\Faculty.cs" />
     <Compile Include="Assets\Scripts\Faculty\FacultyFactory.cs" />
     <Compile Include="Assets\Scripts\Faculty\MadScientist.cs" />
     <Compile Include="Assets\Scripts\Faculty\Prisoner.cs" />
     <Compile Include="Assets\Scripts\Faculty\ProfKiller.cs" />
     <Compile Include="Assets\Scripts\Faculty\Thief.cs" />
-    <Compile Include="Assets\Scripts\GhostMovement.cs" />
-    <Compile Include="Assets\Scripts\Guidance.cs" />
     <Compile Include="Assets\Scripts\Models\Tile.cs" />
     <Compile Include="Assets\Scripts\Models\World.cs" />
-    <Compile Include="Assets\Scripts\SizeAdjustToCamera.cs" />
     <Compile Include="Assets\Scripts\Student\Student.cs" />
     <Compile Include="Assets\Scripts\Student\StudentFactory.cs" />
-    <Compile Include="Assets\Scripts\ToolTips.cs" />
     <Compile Include="Assets\Scripts\UIScripts\InfoBarFixation.cs" />
     <Compile Include="Assets\Scripts\UIScripts\SubMenu.cs" />
     <Compile Include="Assets\Scripts\UIScripts\UpdateBarManager.cs" />
     <Compile Include="Assets\Scripts\UIScripts\VerticalLayout.cs" />
-    <Compile Include="Assets\Scripts\waveMovement.cs" />
+    <Compile Include="Assets\Scripts\Util\CameraShake.cs" />
+    <Compile Include="Assets\Scripts\Util\GhostMovement.cs" />
+    <Compile Include="Assets\Scripts\Util\Guidance.cs" />
+    <Compile Include="Assets\Scripts\Util\SizeAdjustToCamera.cs" />
+    <Compile Include="Assets\Scripts\Util\ToolTips.cs" />
+    <Compile Include="Assets\Scripts\Util\waveMovement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

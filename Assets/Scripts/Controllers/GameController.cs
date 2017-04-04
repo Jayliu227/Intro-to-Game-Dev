@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
     public GameObject PausePanel;
     public RectTransform NumberTracker;
     public GameObject wave;
+    public GameObject keyControl;
     Text[] trackerTexts;
     // TODO:
     // 1. get a reference to the information bar and later prob to the billboard that updates the changes.
@@ -125,11 +126,13 @@ public class GameController : MonoBehaviour {
     {
         Time.timeScale = (Time.timeScale == 0) ? 1 : 0;
         PausePanel.SetActive((PausePanel.activeSelf) ? false: true);
+        keyControl.SetActive(false);
     }
 
-    public void Restart()
+    public void showKeyControl()
     {
-        SceneManager.LoadScene(0);
+        keyControl.SetActive(keyControl.activeSelf ? false : true);
+        keyControl.transform.GetChild(0).GetComponent<Text>().text = "Events: Explosion(E & cursor) Murder(K) Meteroid(M) CleanTombStone(C)";
     }
 
 	// Update is called once per frame
@@ -147,10 +150,10 @@ public class GameController : MonoBehaviour {
         {
             ifield.gameObject.SetActive((ifield.IsActive()) ? false : true);
         }
-
-        // this part is for clamping the camera:
-		float y = Mathf.Clamp(Camera.main.transform.position.y, 8f, 13f);
-        float x = Mathf.Clamp(Camera.main.transform.position.x, 8f, 13f);
+   
+        // change the clamp according to the orthgraphic size.
+		float y = Mathf.Clamp(Camera.main.transform.position.y, 8f * Camera.main.orthographicSize / 10.0f, 13f * 10.0f / Camera.main.orthographicSize);
+        float x = Mathf.Clamp(Camera.main.transform.position.x, 8f * Camera.main.orthographicSize / 10.0f, 13f * 10.0f / Camera.main.orthographicSize);
         Camera.main.transform.position = new Vector3(x, y, Camera.main.transform.position.z);
 
         CheckingWinningCondition();

@@ -10,6 +10,8 @@ public class EventManager : MonoBehaviour {
 	public AudioClip neck;
 	public AudioClip finishBuilding;
 	public AudioClip explosion;
+    public AudioClip bloodGurgling;
+    public GameObject aniExplosion;
 
     public float bonusPossibility = 0;
     // for missile attack
@@ -17,6 +19,7 @@ public class EventManager : MonoBehaviour {
     public GameObject missile;
     public GameObject ghost;
     public GameObject eduNotification;
+    public GameObject bloodScreen;
     public RectTransform notification;
 
     LayerMask layerMask = (1 << 8 | 1 << 9); // containing students and faculties
@@ -48,7 +51,7 @@ public class EventManager : MonoBehaviour {
 
     void Update()
     {
-        TriggerEvents();
+        TriggerEvents(); 
     }
 
     System.Collections.IEnumerator CheckCondition()
@@ -140,6 +143,23 @@ public class EventManager : MonoBehaviour {
                 notification.GetChild(3).GetComponent<Text>().color = Color.black;
             }
     }
+
+    private System.Collections.IEnumerator bloodScreenEffect()
+    {
+        bloodScreen.SetActive(true);
+        RawImage ri = bloodScreen.transform.GetChild(0).GetComponent<RawImage>();
+        ri.color = new Color(ri.color.r, ri.color.g, ri.color.b, 1.0f);
+        if(bloodScreen.activeSelf == true)
+        {
+            while(ri.color.a > 0)
+            {
+                ri.color -= new Color(0.0f, 0.0f, 0.0f, 0.01f);
+                yield return null;
+            }
+            bloodScreen.SetActive(false);
+        }
+    }
+
     // TODO: we first need to figure out how to achieve the effects
     // and then try to figure out the relationship between faculty, building and the possibility of each event.
 
@@ -154,8 +174,9 @@ public class EventManager : MonoBehaviour {
             return;
         }
         // and expand it to a circle and get all the things in the circle and destory bascially.
-
-		AudioSource.PlayClipAtPoint (explosion, Camera.main.transform.position, 0.6f);
+        AudioSource.PlayClipAtPoint(explosion, Camera.main.transform.position, 0.1f);
+        GameObject exp = Instantiate(aniExplosion, new Vector3(explosionPoint.x, explosionPoint.y, -9), Quaternion.identity);
+        Destroy(exp, 3f);
         Collider2D[] collInRange = Physics2D.OverlapCircleAll(new Vector2(explosionPoint.x, explosionPoint.y), range, layerMask, -10, 10);
         GameObject[] goInRange = new GameObject[collInRange.Length];
 
@@ -186,7 +207,6 @@ public class EventManager : MonoBehaviour {
 
         // print to the information window.
         UpdateBarManager.current.UpdateInformationOnBar("Explosion affects " + goInRange.Length + " people!");
-
         // prob animation and sound effect.
     }
 
@@ -203,7 +223,9 @@ public class EventManager : MonoBehaviour {
         GameObject target = StudentFactory._studentList[index].gameObject;
         StudentFactory._studentList.Remove(target.GetComponent<Student>());
         target.GetComponent<Student>().Die();
-		AudioSource.PlayClipAtPoint (neck, Camera.main.transform.position, 3f);
+		AudioSource.PlayClipAtPoint (neck, Camera.main.transform.position, 1.5f);
+        GetComponent<AudioSource>().PlayOneShot(bloodGurgling, 3.0f);
+        StartCoroutine("bloodScreenEffect");
     }
    
     private System.Collections.IEnumerator WaitForMissle (){

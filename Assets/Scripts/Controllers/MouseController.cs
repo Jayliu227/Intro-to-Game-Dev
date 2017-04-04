@@ -48,7 +48,6 @@ public class MouseController : MonoBehaviour {
 		// change the color of the selected tile
 		UpdateSelection();
 
-
 		currentFramePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		currentFramePos.z = 0;
 
