@@ -15,11 +15,13 @@ public class EventManager : MonoBehaviour {
 
     public float bonusPossibility = 0;
     // for missile attack
+    [Header("PreFabs to Attach: ")]
     public Transform targetCross;
     public GameObject missile;
     public GameObject ghost;
     public GameObject eduNotification;
     public GameObject bloodScreen;
+    public GameObject bloodEffect;
     public RectTransform notification;
 
     LayerMask layerMask = (1 << 8 | 1 << 9); // containing students and faculties
@@ -106,6 +108,13 @@ public class EventManager : MonoBehaviour {
             notification.GetChild(2).GetComponent<Text>().color = Color.red;
 			AudioSource.PlayClipAtPoint (trigger, Camera.main.transform.position, 3f);
         }
+    }
+
+    System.Collections.IEnumerator bloodEffectTrigger(Vector3 pos)
+    {
+        GameObject go = Instantiate(bloodEffect, pos, Quaternion.identity);
+        yield return new WaitForSeconds(10f);
+        Destroy(go);
     }
 
     void TriggerEvents()
@@ -200,6 +209,7 @@ public class EventManager : MonoBehaviour {
                 go.GetComponent<Faculty>().lifeTime -= 10;               
             }else if(go.GetComponent<Student>() != null)
             {
+                StartCoroutine("bloodEffectTrigger", go.transform.position);
                 go.GetComponent<Student>().Die();
             }
             
@@ -222,6 +232,7 @@ public class EventManager : MonoBehaviour {
 
         GameObject target = StudentFactory._studentList[index].gameObject;
         StudentFactory._studentList.Remove(target.GetComponent<Student>());
+        StartCoroutine("bloodEffectTrigger", target.transform.position);
         target.GetComponent<Student>().Die();
 		AudioSource.PlayClipAtPoint (neck, Camera.main.transform.position, 1.5f);
         GetComponent<AudioSource>().PlayOneShot(bloodGurgling, 3.0f);
@@ -283,6 +294,7 @@ public class EventManager : MonoBehaviour {
 
             GameObject targetStudent = StudentFactory._studentList[0].gameObject;
             StudentFactory._studentList.Remove(targetStudent.GetComponent<Student>());
+            StartCoroutine("bloodEffectTrigger", targetStudent.transform.position);
             targetStudent.GetComponent<Student>().Die();
         }
 
