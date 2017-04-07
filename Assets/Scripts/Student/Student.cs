@@ -36,7 +36,7 @@ public class Student : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         selfTransform = transform;
-        
+        ComboControl.comboEvent += OnComboUp;
 	}
 	
 	// Update is called once per frame
@@ -50,6 +50,13 @@ public class Student : MonoBehaviour {
         if (health <= 0)
             Die();
 	}
+
+    private void OnComboUp()
+    {
+        if(timePerChange > 0) timePerChange -= 1f;
+        changeSpeed += 5f;
+        if(timeForRest > 1) timeForRest -= 1f;
+    }
 
     public void Die()
     {  
@@ -65,6 +72,7 @@ public class Student : MonoBehaviour {
         int randomNum = Mathf.RoundToInt(Random.Range(0, graveStones.Length - 1));
         gameObject.GetComponent<SpriteRenderer>().sprite = graveStones[randomNum];
 		gameObject.transform.GetChild (0).GetComponent<SpriteRenderer> ().sprite = null;
+        ComboControl.instance.comboUp();
     }
 
     public void RemoveGraveStone()

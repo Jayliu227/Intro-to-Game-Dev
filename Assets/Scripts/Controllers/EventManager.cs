@@ -53,6 +53,7 @@ public class EventManager : MonoBehaviour {
 
     void Update()
     {
+        if (Time.realtimeSinceStartup <= 10f) return;
         TriggerEvents(); 
     }
 
@@ -81,7 +82,7 @@ public class EventManager : MonoBehaviour {
         PMurder += FacultyFactory.facultyLists.Count + GameController.instance.facultyNum["profKiller"] * 0.5f;
         PMissileAttack += GameController.instance.facultyNum["madScientist"] * 1.0f + GameController.instance.facultyNum["profKiller"] * 0.5f + GameController.instance.facultyNum["prisoner"] * 0.5f;
 
-        Debug.Log(PEarthQuake +"  "+ PExplosion + "  " +  PMurder + "  " + PMissileAttack);
+        //Debug.Log(PEarthQuake +"  "+ PExplosion + "  " +  PMurder + "  " + PMissileAttack);
 
         if(!isEarthQuakable && randomNum <= PEarthQuake)
         {

@@ -29,7 +29,6 @@ public class Guidance : MonoBehaviour {
 
     void Update()
     {
-        Debug.Log(guide1 + " " + guide2 + " "+ guide3);
         if (guide1)
         {
             UseEvents();

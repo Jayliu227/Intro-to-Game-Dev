@@ -75,7 +75,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Prefabs\Explosion.cs" />
     <Compile Include="Assets\Scripts\Building Classes\Building.cs" />
     <Compile Include="Assets\Scripts\Building Classes\BuildingFactory.cs" />
     <Compile Include="Assets\Scripts\Building Classes\DiningHall.cs" />
@@ -103,6 +102,8 @@
     <Compile Include="Assets\Scripts\UIScripts\UpdateBarManager.cs" />
     <Compile Include="Assets\Scripts\UIScripts\VerticalLayout.cs" />
     <Compile Include="Assets\Scripts\Util\CameraShake.cs" />
+    <Compile Include="Assets\Scripts\Util\ComboControl.cs" />
+    <Compile Include="Assets\Scripts\Util\Explosion.cs" />
     <Compile Include="Assets\Scripts\Util\GhostMovement.cs" />
     <Compile Include="Assets\Scripts\Util\Guidance.cs" />
     <Compile Include="Assets\Scripts\Util\SizeAdjustToCamera.cs" />
