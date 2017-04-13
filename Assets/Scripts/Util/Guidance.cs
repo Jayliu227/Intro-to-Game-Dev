@@ -62,20 +62,20 @@ public class Guidance : MonoBehaviour {
     {
         if(!panels[0].activeSelf)
             panels[0].SetActive(true);
-        panels[0].transform.GetChild(0).GetComponent<Text>().text = "When these events are light up\nPress corresponding key and kill students!\n(ESC)";
+        panels[0].transform.GetChild(0).GetComponent<Text>().text = "When these events are red,\npress corresponding key to kill students!\n(ESC)";
     }
 
     void BuildBuilding()
     {
         if (!panels[1].activeSelf)
             panels[1].SetActive(true);
-        panels[1].transform.GetChild(0).GetComponent<Text>().text = "Click here to build buildings\nThey would give you some bonus!\n(ESC)";
+        panels[1].transform.GetChild(0).GetComponent<Text>().text = "Click here to create buildings.\nThey increase your maximum students and faculty, along with other bonuses!\n(ESC)";
     }
 
     void ShowGoal()
     {
         if (!panels[2].activeSelf)
             panels[2].SetActive(true);
-        panels[2].transform.GetChild(0).GetComponent<Text>().text = "Kill as many students as possible\nRemember to pay attention\nto educational check!\n(ESC)";
+        panels[2].transform.GetChild(0).GetComponent<Text>().text = "Kill as many students as possible.\nBut remember to pass your educational checks too\n(ESC)";
     }
 }

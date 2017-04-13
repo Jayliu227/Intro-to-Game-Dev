@@ -107,7 +107,7 @@ public class GameController : MonoBehaviour {
     public void StudentKilled(int num)
     {
         _playerStudentKilled += num;
-        UpdateBarManager.current.UpdateInformationOnBar("There were " + _playerStudentKilled + " dead already!");
+        UpdateBarManager.current.UpdateInformationOnBar(_playerStudentKilled + " Students have died so far.");
     }
 
     public bool SpendMoney(int amount)
@@ -172,9 +172,9 @@ public class GameController : MonoBehaviour {
     void UpdateChecker()
     {
         trackerTexts[0].text = "Student: " + studentNum + " [" + StudentFactory.maxStudentAmount + "]";
-        trackerTexts[1].text = "Faculty Max Numer: " + FacultyFactory.MaxFacultyNum;
-        trackerTexts[2].text = "Residence: " + buildingNum["residence"] + " [unlimited]";
-        trackerTexts[3].text = "Faculty Room: "+ buildingNum["facultyRoom"] + " [unlimited]";
+        trackerTexts[1].text = "Max Faculty: " + FacultyFactory.MaxFacultyNum;
+        trackerTexts[2].text = "Residence: " + buildingNum["residence"] + " [-]";
+        trackerTexts[3].text = "Faculty Room: "+ buildingNum["facultyRoom"] + " [-]";
         trackerTexts[4].text = "Hospital: " + buildingNum["hospital"] + " [5]";
         trackerTexts[5].text = "Lab: " + buildingNum["lab"] +" [3]";
         trackerTexts[6].text = "Dining Hall: " + buildingNum["diningHall"] + " [3]";
@@ -220,15 +220,15 @@ public class GameController : MonoBehaviour {
     void UpdateInformationBar()
     {
 
-        _informationBar_Panel.transform.GetChild(0).GetComponent<Text>().text = "Money: " + ((int)_playerMoney).ToString();
+        _informationBar_Panel.transform.GetChild(0).GetComponent<Text>().text = "Funds: $" + ((int)_playerMoney).ToString();
 
-        _informationBar_Panel.transform.GetChild(1).GetComponent<Text>().text = "Faculty Number: " + _playerFacultyNumber.ToString();
+        _informationBar_Panel.transform.GetChild(1).GetComponent<Text>().text = "Faculty: " + _playerFacultyNumber.ToString();
 
-        _informationBar_Panel.transform.GetChild(2).GetComponent<Text>().text = "Student Killed: " + _playerStudentKilled.ToString();
+        _informationBar_Panel.transform.GetChild(2).GetComponent<Text>().text = "Students Killed: " + _playerStudentKilled.ToString();
 
         _informationBar_Panel.transform.GetChild(3).GetComponent<Text>().text = "Market Inflation: " + _playerMarketInflation.ToString();
 
-        _informationBar_Panel.transform.GetChild(4).GetComponent<Text>().text = "Notority Level: " + _playerNotorityLevel.ToString();
+        _informationBar_Panel.transform.GetChild(4).GetComponent<Text>().text = "Notoriety: " + _playerNotorityLevel.ToString();
 
     }
 

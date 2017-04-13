@@ -52,7 +52,9 @@ public abstract class Building {
     {
 		isInstalled = false;
         buildingSpriteRenderer.sprite = Resources.Load<Sprite>("Construction") as Sprite;
-		if(!BuildingFactory.Buildings.Contains(this))
+        buildingSpriteRenderer.sortingOrder = 1;
+
+        if (!BuildingFactory.Buildings.Contains(this))
 			BuildingFactory.Buildings.Add (this);
 		if (!GameController.instance.GetComponent<AudioSource> ().isPlaying) {
 			GameController.instance.GetComponent<AudioSource> ().Play ();

@@ -55,7 +55,7 @@ public class Faculty : MonoBehaviour {
 
     public void Die()
     {
-        Debug.Log("One Faculty Died !!");
+        Debug.Log("A Faculty Member has died.");
         FacultyFactory.facultyLists.Remove(this);
         if(gameObject != null)
             Destroy(gameObject);

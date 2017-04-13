@@ -123,7 +123,7 @@ public class MouseController : MonoBehaviour {
                 
                 StartCoroutine(targetBuilding.WaitForBuildingToFinish());
 
-                UpdateBarManager.current.UpdateInformationOnBar("A " + buildingType.ToLower() + " starts to construct.");
+                UpdateBarManager.current.UpdateInformationOnBar("A " + buildingType.ToLower() + " is being constructed.");
                                             
                 // when the building is placed, add it to the dictionary
                 if (!tileToBuildingDic.ContainsKey(tileUnderCursor))
@@ -144,7 +144,7 @@ public class MouseController : MonoBehaviour {
         {
             if(targetBuilding != null)
             {
-                UpdateBarManager.current.UpdateInformationOnBar(targetBuilding.buildingType + " is cancelled");
+                UpdateBarManager.current.UpdateInformationOnBar(targetBuilding.buildingType + " construction is cancelled");
                 targetBuilding = null;
                 buildingType = null;
                 return;

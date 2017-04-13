@@ -10,7 +10,7 @@ public class FacultyFactory : MonoBehaviour {
     public static int MaxFacultyNum
     {
         get { return maxFacultyNum; }
-        set { maxFacultyNum += value; UpdateBarManager.current.UpdateInformationOnBar("Now maximum faculty number is " + maxFacultyNum); }
+        set { maxFacultyNum += value; UpdateBarManager.current.UpdateInformationOnBar("Maximum faculty number is now " + maxFacultyNum); }
     }
 
     public static int durabilityBonus = 0;
@@ -60,7 +60,7 @@ public class FacultyFactory : MonoBehaviour {
                 // BUG: this was bugged because I added the wrong unit into the faculty list.
                 facultyLists.Add(_prisoner.GetComponent<Prisoner>());
 
-                UpdateBarManager.current.UpdateInformationOnBar("A new prisoner is coming out!");
+                UpdateBarManager.current.UpdateInformationOnBar("A new prisoner has arrived!");
 
                 GameController.instance.SpendMoney(_prisoner.GetComponent<Prisoner>().price);
 
@@ -77,7 +77,7 @@ public class FacultyFactory : MonoBehaviour {
 
                 if (GameController.instance.buildingNum["lab"] <= 0 || GameController.instance.buildingNum["diningHall"] <= 0)
                 {
-                    UpdateBarManager.current.UpdateInformationOnBar("Lacks hospital or dining hall for mad scientist");
+                    UpdateBarManager.current.UpdateInformationOnBar("You need a hospital or dining hall first!");
                     return;
                 }
 
@@ -91,7 +91,7 @@ public class FacultyFactory : MonoBehaviour {
 
                 facultyLists.Add(_madScientist.GetComponent<MadScientist>());
 
-                UpdateBarManager.current.UpdateInformationOnBar("A new mad scientist is coming out!");
+                UpdateBarManager.current.UpdateInformationOnBar("A new mad scientist has arrived!");
 
                 GameController.instance.SpendMoney(_madScientist.GetComponent<MadScientist>().price);
 
@@ -108,7 +108,7 @@ public class FacultyFactory : MonoBehaviour {
 
                 if(GameController.instance.buildingNum["hospital"] <= 0)
                 {
-                    UpdateBarManager.current.UpdateInformationOnBar("Lacks Hospital for professional killer");
+                    UpdateBarManager.current.UpdateInformationOnBar("You need a hospital first!");
                     return;
                 }
 
@@ -124,7 +124,7 @@ public class FacultyFactory : MonoBehaviour {
 
                 GameController.instance.SpendMoney(_profKiller.GetComponent<ProfKiller>().price);
 
-                UpdateBarManager.current.UpdateInformationOnBar("A new professional killer is coming out!");
+                UpdateBarManager.current.UpdateInformationOnBar("A new professional killer has arrived!");
 
                 facultyCount++;
 
@@ -139,7 +139,7 @@ public class FacultyFactory : MonoBehaviour {
 
                 if (GameController.instance.buildingNum["retailer"] <= 0)
                 {
-                    UpdateBarManager.current.UpdateInformationOnBar("Lacks Hospital for thief");
+                    UpdateBarManager.current.UpdateInformationOnBar("You need a hospital first!");
                     return;
                 }
 
